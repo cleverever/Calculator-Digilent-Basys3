@@ -19,6 +19,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
+import calculator_pkg::*;
 
 module seven_segment_display_controller
 (
@@ -35,4 +36,5 @@ module seven_segment_display_controller
     output a2,
     output a3
 );
+//TODO
 endmodule
