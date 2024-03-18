@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 package calculator_pkg;
-    typedef enum logic [1 : 0]
+    typedef enum logic [1:0]
     {
         CLEAR,
         OP,
@@ -28,7 +28,7 @@ package calculator_pkg;
     }
     CalcState;
     
-    typedef enum logic [1 : 0]
+    typedef enum logic [1:0]
     {
         ADD,
         SUB,
@@ -40,38 +40,65 @@ endpackage
 
 module calculator
 (
-    input [13:0] sw,
-    input btnu,
-    input btnd,
-    input btnc,
-    input btnl,
-    input btnr,
+    input logic[13:0] sw,
+    input logic btnu,
+    input logic btnd,
+    input logic btnc,
+    input logic btnl,
+    input logic btnr,
     
-    output ca,
-    output cb,
-    output cc,
-    output cd,
-    output ce,
-    output cf,
-    output cg,
-    output a0,
-    output a1,
-    output a2,
-    output a3
+    output logic ca,
+    output logic cb,
+    output logic cc,
+    output logic cd,
+    output logic ce,
+    output logic cf,
+    output logic cg,
+    output logic a0,
+    output logic a1,
+    output logic a2,
+    output logic a3
 );
+
+logic [13:0] display_value;
+
+CalcState state;
 
 state_machine STATE_MACHINE
 (
-    
+    .btnu(btnu),
+    .btnd(btnd),
+    .btnc(btnc),
+    .btnl(btnl),
+    .btnr(btnr),
+    .user_value(),
+    .alu_value(),
+    .state(state),
+    .display_value(display_value)
 );
+
 
 alu ALU
 (
-    
+    .op(),
+    .in0(),
+    .in1(),
+    .out()
 );
 
 seven_segment_display_controller DISPLAY_CONTROLLER
 (
-    
+    .in(display_value),
+    .ca(),
+    .cb(),
+    .cc(),
+    .cd(),
+    .ce(),
+    .cf(),
+    .cg(),
+    .a0(),
+    .a1(),
+    .a2(),
+    .a3()
 );
 endmodule

@@ -23,17 +23,34 @@ import calculator_pkg::*;
 
 module state_machine
 (
-    input btnu,
-    input btnd,
-    input btnc,
-    input btnl,
-    input btnr,
+    input logic btnu,
+    input logic btnd,
+    input logic btnc,
+    input logic btnl,
+    input logic btnr,
+    input logic[13:0] user_value,
+    input logic[13:0] alu_value,
     
-    output CalcState state
+    output CalcState state,
+    output logic [13:0] display_value
 );
 
 logic btn_pressed;
 assign btn_pressed = btnu | btnd | btnc | btnl | btnr;
+
+always_comb begin
+    case(state)
+        CLEAR : begin
+            display_value = user_value;
+        end
+        OP : begin
+            display_value = user_value;
+        end
+        ANSWER : begin
+            display_value = alu_value;
+        end
+    endcase
+end
 
 always_ff @(posedge btn_pressed) begin
     case(state)
@@ -63,5 +80,4 @@ always_ff @(posedge btn_pressed) begin
         end
     endcase
 end
-
 endmodule
