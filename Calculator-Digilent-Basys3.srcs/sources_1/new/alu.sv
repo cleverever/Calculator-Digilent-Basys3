@@ -24,9 +24,9 @@ import calculator_pkg::*;
 module alu
 (
     input ALU_Op op,
-    input [13:0] in0,
-    input [13:0] in1,
-    output [13:0] out
+    input logic [13:0] in0,
+    input logic [13:0] in1,
+    output logic [13:0] out
 );
 
 always_comb begin
