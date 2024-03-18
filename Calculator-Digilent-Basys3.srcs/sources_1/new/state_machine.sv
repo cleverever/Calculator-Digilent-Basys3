@@ -32,6 +32,7 @@ module state_machine
     input logic[13:0] alu_value,
     
     output CalcState state,
+    output ALU_Op op,
     output logic [13:0] display_value
 );
 
@@ -50,6 +51,21 @@ always_comb begin
             display_value = alu_value;
         end
     endcase
+end
+
+always_latch begin
+    if(btnu) begin
+        op <= ADD;
+    end
+    else if(btnd) begin
+        op <= DIV;
+    end
+    else if(btnl) begin
+        op <= SUB;
+    end
+    else if(btnr) begin
+        op <= MULT;
+    end
 end
 
 always_ff @(posedge btn_pressed) begin
