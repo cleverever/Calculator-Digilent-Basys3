@@ -48,7 +48,7 @@ always_comb begin
             display_value = user_value;
         end
         ANSWER : begin
-            display_value = alu_value;
+            display_value = accumulator;
         end
     endcase
 end
