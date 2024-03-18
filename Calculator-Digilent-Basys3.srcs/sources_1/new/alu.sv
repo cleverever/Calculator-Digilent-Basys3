@@ -19,12 +19,30 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
+import calculator_pkg::*;
 
 module alu
 (
-    input [2:0] op,
+    input ALU_Op op,
     input [13:0] in0,
     input [13:0] in1,
     output [13:0] out
 );
+
+always_comb begin
+    case(op)
+        ADD : begin
+            out = in0 + in1;
+        end
+        SUB : begin
+            out = in0 - in1;
+        end
+        MULT : begin
+            out = in0 * in1;
+        end
+        DIV : begin
+            out = in0 / in1;
+        end
+    endcase
+end
 endmodule
