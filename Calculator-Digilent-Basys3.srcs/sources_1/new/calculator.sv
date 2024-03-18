@@ -19,6 +19,24 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
+package calculator_pkg;
+    typedef enum logic [1 : 0]
+    {
+        CLEAR,
+        OP,
+        ANSWER
+    }
+    CalcState;
+    
+    typedef enum logic [1 : 0]
+    {
+        ADD,
+        SUB,
+        MULT,
+        DIV
+    }
+    ALU_Op;
+endpackage
 
 module calculator
 (
@@ -27,6 +45,33 @@ module calculator
     input btnd,
     input btnc,
     input btnl,
-    input btnr
+    input btnr,
+    
+    output ca,
+    output cb,
+    output cc,
+    output cd,
+    output ce,
+    output cf,
+    output cg,
+    output a0,
+    output a1,
+    output a2,
+    output a3
+);
+
+state_machine STATE_MACHINE
+(
+    
+);
+
+alu ALU
+(
+    
+);
+
+seven_segment_display_controller DISPLAY_CONTROLLER
+(
+    
 );
 endmodule
