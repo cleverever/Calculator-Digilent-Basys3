@@ -38,6 +38,8 @@ package calculator_pkg;
     ALU_Op;
 endpackage
 
+import calculator_pkg::*;
+
 module calculator
 (
     input logic [13:0] sw,
@@ -47,18 +49,11 @@ module calculator
     input logic btnl,
     input logic btnr,
     
-    output logic ca,
-    output logic cb,
-    output logic cc,
-    output logic cd,
-    output logic ce,
-    output logic cf,
-    output logic cg,
-    output logic a0,
-    output logic a1,
-    output logic a2,
-    output logic a3
+    output logic c [7],
+    output logic a [4]
 );
+
+logic clk;
 
 logic [13:0] display_value;
 logic [13:0] alu_result;
@@ -93,19 +88,11 @@ alu ALU
     .out(alu_result)
 );
 
-seven_segment_display_controller DISPLAY_CONTROLLER
+seven_segment_display_controller #(.N(4)) DISPLAY_CONTROLLER
 (
+    .clk(clk),
     .in(display_value),
-    .ca(),
-    .cb(),
-    .cc(),
-    .cd(),
-    .ce(),
-    .cf(),
-    .cg(),
-    .a0(),
-    .a1(),
-    .a2(),
-    .a3()
+    .c(c),
+    .a(a)
 );
 endmodule
