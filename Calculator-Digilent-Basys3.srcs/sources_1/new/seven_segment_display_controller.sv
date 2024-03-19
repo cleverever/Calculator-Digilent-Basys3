@@ -52,9 +52,15 @@ if(N > 1) begin
     end
     
     always_comb begin
-        c = {>>{encoding[counter]}};
-        a = {default : 1'b0};
-        a[counter] = 1'b1;
+        if(~n_rst) begin
+            c = {default : 1'b0};
+            a = {default : 1'b0};
+        end
+        else begin
+            c = {>>{encoding[counter]}};
+            a = {default : 1'b0};
+            a[counter] = 1'b1;
+        end
     end
 end
 else begin
