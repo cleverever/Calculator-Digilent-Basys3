@@ -19,24 +19,6 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-package calculator_pkg;
-    typedef enum logic [1:0]
-    {
-        CLEAR,
-        OP,
-        ANSWER
-    }
-    CalcState;
-    
-    typedef enum logic [1:0]
-    {
-        ADD,
-        SUB,
-        MULT,
-        DIV
-    }
-    ALU_Op;
-endpackage
 
 import calculator_pkg::*;
 
