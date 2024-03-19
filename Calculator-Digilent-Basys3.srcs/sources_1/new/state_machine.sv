@@ -24,6 +24,8 @@ import calculator_pkg::*;
 
 module state_machine
 (
+    input logic n_rst,
+    
     input logic btnu,
     input logic btnd,
     input logic btnc,
@@ -69,36 +71,41 @@ always_latch begin
     end
 end
 
-always_ff @(posedge btn_pressed) begin
-    case(state)
-        CLEAR : begin
-            if(btnc) begin
-                state <= CLEAR;
+always_ff @(posedge btn_pressed or negedge n_rst) begin
+    if(~n_rst) begin
+        state <= CLEAR;
+    end
+    else begin
+        case(state)
+            CLEAR : begin
+                if(btnc) begin
+                    state <= CLEAR;
+                end
+                else begin
+                    state <= OP;
+                    accumulator <= limit_value(user_value);
+                end
             end
-            else begin
-                state <= OP;
-                accumulator <= limit_value(user_value);
+            OP : begin
+                if(btnc) begin
+                    state <= ANSWER;
+                    accumulator <= limit_value(alu_value);
+                end
+                else begin
+                    state <= OP;
+                end
             end
-        end
-        OP : begin
-            if(btnc) begin
-                state <= ANSWER;
-                accumulator <= limit_value(alu_value);
+            ANSWER : begin
+                if(btnc) begin
+                    state <= CLEAR;
+                    accumulator <= 0;
+                end
+                else begin
+                    state <= OP;
+                end
             end
-            else begin
-                state <= OP;
-            end
-        end
-        ANSWER : begin
-            if(btnc) begin
-                state <= CLEAR;
-                accumulator <= 0;
-            end
-            else begin
-                state <= OP;
-            end
-        end
-    endcase
+        endcase
+    end
 end
 
 function logic [13:0] limit_value(input logic [13:0] value);
