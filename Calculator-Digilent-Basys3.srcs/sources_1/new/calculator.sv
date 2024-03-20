@@ -34,15 +34,18 @@ module calculator
     input logic btnr,
     
     output logic c [7],
-    output logic a [4]
+    output logic a [4],
+    
+    output logic s [3],
+    output logic o [4]
 );
 
-localparam rst_time = 5000;
+localparam rst_time = 300000000;
 
 logic n_rst;
 logic [$clog2(rst_time)-1:0] rst_counter;
 always_ff @(posedge clk) begin
-    if(btnc) begin
+    if(btnc_d) begin
         if(rst_counter < rst_time) begin
             rst_counter <= rst_counter + 1;
         end
@@ -56,23 +59,81 @@ always_ff @(posedge clk) begin
     end
 end
 
-logic [13:0] display_value;
-logic [13:0] alu_result;
-logic [13:0] accumulator;
-logic [13:0] user_value;
+logic unsigned [13:0] display_value;
+logic unsigned [13:0] alu_result;
+logic unsigned [13:0] accumulator;
+logic unsigned [13:0] user_value;
 
-assign user_value = {>>{sw}};
+assign user_value = {<<{sw}};
 
 CalcState state;
 ALU_Op op;
 
+always_comb begin
+    case(state)
+        CLEAR : s = {1'b1, 1'b0, 1'b0};
+        OP : s = {1'b0, 1'b1, 1'b0};
+        ANSWER : s = {1'b0, 1'b0, 1'b1};
+    endcase
+    case(op)
+        ADD : o = {1'b1, 1'b0, 1'b0, 1'b0};
+        SUB : o = {1'b0, 1'b1, 1'b0, 1'b0};
+        MULT : o = {1'b0, 1'b0, 1'b1, 1'b0};
+        DIV : o = {1'b0, 1'b0, 1'b0, 1'b1};
+    endcase
+end
+
+localparam DB_CYCLES = 100;
+
+logic btnu_d;
+logic btnd_d;
+logic btnc_d;
+logic btnl_d;
+logic btnr_d;
+
+button_debouncer #(.CYCLES(DB_CYCLES)) DB0
+(
+    .clk(clk),
+    .btn(btnc),
+    .btn_d()
+);
+
+button_debouncer #(.CYCLES(DB_CYCLES)) DB1
+(
+    .clk(clk),
+    .btn(btnu),
+    .btn_d()
+);
+
+button_debouncer #(.CYCLES(DB_CYCLES)) DB2
+(
+    .clk(clk),
+    .btn(btnd),
+    .btn_d()
+);
+
+button_debouncer #(.CYCLES(DB_CYCLES)) DB3
+(
+    .clk(clk),
+    .btn(btnl),
+    .btn_d()
+);
+
+button_debouncer #(.CYCLES(DB_CYCLES)) DB4
+(
+    .clk(clk),
+    .btn(btnr),
+    .btn_d()
+);
+
 state_machine STATE_MACHINE
 (
-    .btnu(btnu),
-    .btnd(btnd),
-    .btnc(btnc),
-    .btnl(btnl),
-    .btnr(btnr),
+    .n_rst(n_rst),
+    .btnu(btnu_d),
+    .btnd(btnd_d),
+    .btnc(btnc_d),
+    .btnl(btnl_d),
+    .btnr(btnr_d),
     .user_value(user_value),
     .alu_value(alu_result),
     
@@ -85,7 +146,6 @@ state_machine STATE_MACHINE
 
 alu ALU
 (
-    .n_rst(n_rst),
     .op(op),
     .in0(accumulator),
     .in1(user_value),
