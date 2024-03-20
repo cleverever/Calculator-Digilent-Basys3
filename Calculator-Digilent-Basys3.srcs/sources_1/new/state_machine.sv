@@ -31,13 +31,13 @@ module state_machine
     input logic btnc,
     input logic btnl,
     input logic btnr,
-    input logic [13:0] user_value,
-    input logic [13:0] alu_value,
+    input logic unsigned [13:0] user_value,
+    input logic unsigned [13:0] alu_value,
     
     output CalcState state,
     output ALU_Op op,
-    output logic [13:0] accumulator,
-    output logic [13:0] display_value
+    output logic unsigned [13:0] accumulator,
+    output logic unsigned [13:0] display_value
 );
 logic btn_pressed;
 assign btn_pressed = btnu | btnd | btnc | btnl | btnr;
@@ -56,26 +56,23 @@ always_comb begin
     endcase
 end
 
-always_latch begin
-    if(btnu) begin
-        op <= ADD;
-    end
-    else if(btnd) begin
-        op <= DIV;
-    end
-    else if(btnl) begin
-        op <= SUB;
-    end
-    else if(btnr) begin
-        op <= MULT;
-    end
-end
-
 always_ff @(posedge btn_pressed or negedge n_rst) begin
     if(~n_rst) begin
         state <= CLEAR;
     end
     else begin
+        if(btnu) begin
+            op <= ADD;
+        end
+        else if(btnd) begin
+            op <= DIV;
+        end
+        else if(btnl) begin
+            op <= SUB;
+        end
+        else if(btnr) begin
+            op <= MULT;
+        end
         case(state)
             CLEAR : begin
                 if(btnc) begin
