@@ -26,7 +26,7 @@ module button_debouncer #(parameter CYCLES = 100)
 (
     input logic clk,
     input logic btn,
-    output logic d_btn
+    output logic btn_d
 );
 
 logic unsigned [$clog2(CYCLES) : 0] counter;
@@ -37,7 +37,7 @@ always_ff @(posedge clk) begin
             counter <= counter + 1;
         end
         else begin
-            d_btn <= 1'b1;
+            btn_d <= 1'b1;
         end
     end
     else begin
@@ -45,7 +45,7 @@ always_ff @(posedge clk) begin
             counter <= counter - 1;
         end
         else begin
-            d_btn <= 1'b0;
+            btn_d <= 1'b0;
         end
     end
 end
