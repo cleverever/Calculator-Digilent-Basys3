@@ -29,7 +29,7 @@ module button_debouncer #(parameter CYCLES = 100)
     output logic btn_d
 );
 
-logic unsigned [$clog2(CYCLES) : 0] counter;
+logic unsigned [$clog2(CYCLES+1)-1 : 0] counter;
 
 always_ff @(posedge clk) begin
     if(btn) begin

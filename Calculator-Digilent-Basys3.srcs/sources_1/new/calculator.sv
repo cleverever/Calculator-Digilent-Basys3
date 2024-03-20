@@ -43,7 +43,7 @@ module calculator
 localparam rst_time = 300000000;
 
 logic n_rst;
-logic [$clog2(rst_time)-1:0] rst_counter;
+logic [$clog2(rst_time+1)-1:0] rst_counter;
 always_ff @(posedge clk) begin
     if(btnc_d) begin
         if(rst_counter < rst_time) begin
