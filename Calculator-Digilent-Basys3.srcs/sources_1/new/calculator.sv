@@ -94,36 +94,36 @@ logic btnr_d;
 button_debouncer #(.CYCLES(DB_CYCLES)) DB0
 (
     .clk(clk),
-    .btn(btnc),
-    .btn_d()
+    .btn(btnu),
+    .btn_d(btnu_d)
 );
 
 button_debouncer #(.CYCLES(DB_CYCLES)) DB1
 (
     .clk(clk),
-    .btn(btnu),
-    .btn_d()
+    .btn(btnd),
+    .btn_d(btnd_d)
 );
 
 button_debouncer #(.CYCLES(DB_CYCLES)) DB2
 (
     .clk(clk),
-    .btn(btnd),
-    .btn_d()
+    .btn(btnc),
+    .btn_d(btnc_d)
 );
 
 button_debouncer #(.CYCLES(DB_CYCLES)) DB3
 (
     .clk(clk),
     .btn(btnl),
-    .btn_d()
+    .btn_d(btnl_d)
 );
 
 button_debouncer #(.CYCLES(DB_CYCLES)) DB4
 (
     .clk(clk),
     .btn(btnr),
-    .btn_d()
+    .btn_d(btnr_d)
 );
 
 state_machine STATE_MACHINE
