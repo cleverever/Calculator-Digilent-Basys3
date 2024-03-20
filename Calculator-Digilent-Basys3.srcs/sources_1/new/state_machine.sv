@@ -59,6 +59,7 @@ end
 always_ff @(posedge btn_pressed or negedge n_rst) begin
     if(~n_rst) begin
         state <= CLEAR;
+        op <= ADD;
     end
     else begin
         if(btnu) begin
@@ -74,15 +75,6 @@ always_ff @(posedge btn_pressed or negedge n_rst) begin
             op <= MULT;
         end
         case(state)
-            CLEAR : begin
-                if(btnc) begin
-                    state <= CLEAR;
-                end
-                else begin
-                    state <= OP;
-                    accumulator <= limit_value(user_value);
-                end
-            end
             OP : begin
                 if(btnc) begin
                     state <= ANSWER;
@@ -99,6 +91,15 @@ always_ff @(posedge btn_pressed or negedge n_rst) begin
                 end
                 else begin
                     state <= OP;
+                end
+            end
+            default : begin
+                if(btnc) begin
+                    state <= CLEAR;
+                end
+                else begin
+                    state <= OP;
+                    accumulator <= limit_value(user_value);
                 end
             end
         endcase
