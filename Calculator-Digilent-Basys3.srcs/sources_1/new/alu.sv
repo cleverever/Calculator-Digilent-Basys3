@@ -31,15 +31,15 @@ module alu
 );
 
 always_comb begin
-    case(op)
+    unique case(op)
         ADD : begin
-            out = in0 + in1;
+            out = (in0 + in1) > 9999? 9999 : (in0 + in1);
         end
         SUB : begin
-            out = in0 - in1;
+            out = (in0 - in1) < 0? 0 : (in0 - in1);
         end
         MULT : begin
-            out = in0 * in1;
+            out = (in0 * in1) > 9999? 9999 : (in0 * in1);
         end
         DIV : begin
             out = in0 / in1;
