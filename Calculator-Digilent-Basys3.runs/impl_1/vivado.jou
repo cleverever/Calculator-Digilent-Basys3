@@ -3,12 +3,12 @@
 # SW Build 4029153 on Fri Oct 13 20:14:34 MDT 2023
 # IP Build 4028589 on Sat Oct 14 00:45:43 MDT 2023
 # SharedData Build 4025554 on Tue Oct 10 17:18:54 MDT 2023
-# Start of session at: Mon Mar 18 09:38:30 2024
-# Process ID: 28164
+# Start of session at: Wed Mar 20 22:23:15 2024
+# Process ID: 11128
 # Current directory: C:/Users/Cleverever/Calculator-Digilent-Basys3/Calculator-Digilent-Basys3.runs/impl_1
-# Command line: vivado.exe -log alu.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source alu.tcl -notrace
-# Log file: C:/Users/Cleverever/Calculator-Digilent-Basys3/Calculator-Digilent-Basys3.runs/impl_1/alu.vdi
+# Command line: vivado.exe -log calculator.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source calculator.tcl -notrace
+# Log file: C:/Users/Cleverever/Calculator-Digilent-Basys3/Calculator-Digilent-Basys3.runs/impl_1/calculator.vdi
 # Journal file: C:/Users/Cleverever/Calculator-Digilent-Basys3/Calculator-Digilent-Basys3.runs/impl_1\vivado.jou
 # Running On: DESKTOP-PUQ3RUL, OS: Windows, CPU Frequency: 3194 MHz, CPU Physical cores: 8, Host memory: 17059 MB
 #-----------------------------------------------------------
-source alu.tcl -notrace
+source calculator.tcl -notrace

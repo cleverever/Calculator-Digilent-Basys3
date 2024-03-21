@@ -1,0 +1,14 @@
+# compile verilog/system verilog design source files
+sv xil_defaultlib  \
+"../../../../Calculator-Digilent-Basys3.srcs/sources_1/new/alu.sv" \
+"../../../../Calculator-Digilent-Basys3.srcs/sources_1/new/seven_segment_display_controller.sv" \
+"../../../../Calculator-Digilent-Basys3.srcs/sources_1/new/calculator.sv" \
+"../../../../Calculator-Digilent-Basys3.srcs/sources_1/new/state_machine.sv" \
+"../../../../Calculator-Digilent-Basys3.srcs/sources_1/new/calculator_pkg.sv" \
+"../../../../Calculator-Digilent-Basys3.srcs/sim_1/new/calculator_tb.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort
