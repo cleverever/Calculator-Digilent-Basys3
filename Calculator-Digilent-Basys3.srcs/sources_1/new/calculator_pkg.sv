@@ -1,35 +1,16 @@
-`timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 03/18/2024 06:00:14 PM
-// Design Name: 
-// Module Name: calculator_pkg
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
-
 package calculator_pkg;
-    typedef enum logic [1:0]
+    typedef enum
     {
-        CLEAR,
-        OP,
-        ANSWER
+        CLEAR0,
+        CLEAR1,
+        OP0,
+        OP1,
+        ANSWER0,
+        ANSWER1
     }
     CalcState;
     
-    typedef enum logic [1:0]
+    typedef enum
     {
         ADD,
         SUB,
