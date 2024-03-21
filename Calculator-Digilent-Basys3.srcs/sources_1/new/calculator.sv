@@ -50,12 +50,12 @@ always_ff @(posedge clk) begin
             rst_counter <= rst_counter + 1;
         end
         else begin
-            n_rst <= 0;
+            n_rst <= 1'b0;
         end
     end
     else begin
         rst_counter <= 0;
-        n_rst <= 1;
+        n_rst <= 1'b1;
     end
 end
 
@@ -64,26 +64,42 @@ logic unsigned [13:0] alu_result;
 logic unsigned [13:0] accumulator;
 logic unsigned [13:0] user_value;
 
-assign user_value = {<<{sw}};
+logic unsigned [13:0] sw_value;
+assign sw_value = {<<{sw}};
+assign user_value = (sw_value > 9999)? 9999 : sw_value;
 
 CalcState state;
 ALU_Op op;
 
 always_comb begin
-    case(state)
-        CLEAR : s = {1'b1, 1'b0, 1'b0};
-        OP : s = {1'b0, 1'b1, 1'b0};
-        ANSWER : s = {1'b0, 1'b0, 1'b1};
+    unique case(state)
+        OP0, OP1 : begin
+            s = {1'b0, 1'b1, 1'b0};
+        end
+        ANSWER0, ANSWER1 : begin
+            s = {1'b0, 1'b0, 1'b1};
+        end
+        default : begin
+            s = {1'b1, 1'b0, 1'b0};
+        end
     endcase
-    case(op)
-        ADD : o = {1'b1, 1'b0, 1'b0, 1'b0};
-        SUB : o = {1'b0, 1'b1, 1'b0, 1'b0};
-        MULT : o = {1'b0, 1'b0, 1'b1, 1'b0};
-        DIV : o = {1'b0, 1'b0, 1'b0, 1'b1};
+    unique case(op)
+        ADD : begin
+            o = {1'b1, 1'b0, 1'b0, 1'b0};
+        end
+        SUB : begin
+            o = {1'b0, 1'b1, 1'b0, 1'b0};
+        end
+        MULT : begin
+            o = {1'b0, 1'b0, 1'b1, 1'b0};
+        end
+        DIV : begin
+            o = {1'b0, 1'b0, 1'b0, 1'b1};
+        end
     endcase
 end
 
-localparam DB_CYCLES = 100;
+localparam DB_CYCLES = 10000;
 
 logic btnu_d;
 logic btnd_d;
@@ -128,6 +144,7 @@ button_debouncer #(.CYCLES(DB_CYCLES)) DB4
 
 state_machine STATE_MACHINE
 (
+    .clk(clk),
     .n_rst(n_rst),
     .btnu(btnu_d),
     .btnd(btnd_d),
