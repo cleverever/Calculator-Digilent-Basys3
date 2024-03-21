@@ -1,17 +1,18 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
-// Engineer: 
+// Engineer: Everett Craw
 // 
 // Create Date: 03/18/2024 09:27:56 AM
 // Design Name: 
 // Module Name: 7_segment-display_controller
-// Project Name: 
-// Target Devices: 
+// Project Name: Calculator-Digilent-Basys3
+// Target Devices: Digilent-Basys3
 // Tool Versions: 
-// Description: 
+// Description: A module which can display a binary integer as a decimal integer on
+// a 7-segment display. Adjust N to change the number of digits that are to be displayed.
 // 
-// Dependencies: 
+// Dependencies: NONE
 // 
 // Revision:
 // Revision 0.01 - File Created
@@ -20,27 +21,27 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-import calculator_pkg::*;
-
 module seven_segment_display_controller #(parameter N = 4)
 (
     input logic clk,
     input logic n_rst,
+    
     input logic unsigned [13:0] in,
+    
     output logic c [7],
     output logic a [N]
 );
-
-logic [6:0] encoding [N];
-logic [3:0] digit [N];
-
 
 logic [15:0] clk_div;
 always_ff @(posedge clk) begin
     clk_div <= clk_div + 1;
 end
 
+logic [6:0] encoding [N];
+logic [3:0] digit [N];
 
+//Generates encoding logic for each digit and rapidly switches between
+//each digit to momentarily display its value.
 generate
 if(N > 1) begin
     logic unsigned [$clog2(N)-1:0] counter;

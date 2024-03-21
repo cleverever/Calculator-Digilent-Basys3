@@ -1,17 +1,18 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
-// Engineer: 
+// Engineer: Everett Craw
 // 
 // Create Date: 03/18/2024 09:27:56 AM
 // Design Name: 
 // Module Name: alu
-// Project Name: 
-// Target Devices: 
+// Project Name: Calculator-Digilent-Basys3
+// Target Devices: Digilent-Basys3
 // Tool Versions: 
-// Description: 
+// Description: A simple ALU which can perform addition, subtraction, multiplication,
+// and division on 2 unsigned integers ranging from 0-9999.
 // 
-// Dependencies: 
+// Dependencies: calculator_pkg.sv
 // 
 // Revision:
 // Revision 0.01 - File Created

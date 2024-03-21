@@ -1,17 +1,18 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
-// Engineer: 
+// Engineer: Everett Craw
 // 
 // Create Date: 03/18/2024 09:58:14 AM
 // Design Name: 
 // Module Name: state_machine
-// Project Name: 
-// Target Devices: 
+// Project Name: Calculator-Digilent-Basys3
+// Target Devices: Digilent-Basys3
 // Tool Versions: 
-// Description: 
+// Description: A state machine to keep track of the operands, operator, and
+// calculation state.
 // 
-// Dependencies: 
+// Dependencies: calculator_pkg.sv
 // 
 // Revision:
 // Revision 0.01 - File Created
@@ -32,16 +33,32 @@ module state_machine
     input logic btnc,
     input logic btnl,
     input logic btnr,
+    
     input logic unsigned [13:0] user_value,
     input logic unsigned [13:0] alu_value,
     
     output CalcState state,
     output ALU_Op op,
+    
     output logic unsigned [13:0] accumulator,
     output logic unsigned [13:0] display_value
 );
+
 logic op_pressed;
 assign op_pressed = btnu | btnd | btnl | btnr;
+
+//0 after a state is the waiting state for the button to be release.
+//1 after a state is the ready state to respond to the next button press.
+//
+//CLEAR :   Accumulator is set to 0, user is entering the first
+//          operand for the calculation.
+//OP :      Operation has been selected and the user is entering the
+//          second operand for the calculation. Operation can be switched
+//          at this state without clearing accumulator.
+//ANSWER:   The ALU's result has been stored to the accumulator and is being
+//          displayed. An operation may be selected to continue to use the
+//          accumulator as an operand or the clear/answer button may be pressed
+//          a second time to reset the accumulator to 0 and the state to CLEAR.
 
 always_comb begin
     unique case(state)

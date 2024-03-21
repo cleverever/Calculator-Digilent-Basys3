@@ -1,17 +1,20 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
-// Engineer: 
+// Engineer: Everett Craw
 // 
 // Create Date: 03/18/2024 09:27:56 AM
 // Design Name: 
 // Module Name: calculator
-// Project Name: 
-// Target Devices: 
+// Project Name: Calculator-Digilent-Basys3
+// Target Devices: Digilent-Basys3
 // Tool Versions: 
-// Description: 
+// Description: A primitive calculator with only add, subtract, multiply, and divide.
+// Works with integers ranged 0-9999 and operands must be enter in binary by flipping
+// switches. Answer can be reused as an operand for recursive calculation.
 // 
-// Dependencies: 
+// Dependencies: calculator_pkg.sv, alu.sv, state_machine.sv,
+// seven_segment_display_controller.sv, button_debouncer.sv
 // 
 // Revision:
 // Revision 0.01 - File Created
@@ -27,6 +30,7 @@ module calculator
     input logic clk,
     
     input logic sw [14],
+    
     input logic btnu,
     input logic btnd,
     input logic btnc,
@@ -40,6 +44,17 @@ module calculator
     output logic o [4]
 );
 
+logic unsigned [13:0] display_value;
+logic unsigned [13:0] alu_result;
+logic unsigned [13:0] accumulator;
+logic unsigned [13:0] sw_value;
+logic unsigned [13:0] user_value;
+
+CalcState state;
+ALU_Op op;
+
+//Resets the internal state machine when the clear/answer
+//button is held for 3 seconds.
 localparam rst_time = 300000000;
 
 logic n_rst;
@@ -59,18 +74,10 @@ always_ff @(posedge clk) begin
     end
 end
 
-logic unsigned [13:0] display_value;
-logic unsigned [13:0] alu_result;
-logic unsigned [13:0] accumulator;
-logic unsigned [13:0] user_value;
-
-logic unsigned [13:0] sw_value;
 assign sw_value = {<<{sw}};
 assign user_value = (sw_value > 9999)? 9999 : sw_value;
 
-CalcState state;
-ALU_Op op;
-
+//Debug lights for current state and current operation.
 always_comb begin
     unique case(state)
         OP0, OP1 : begin
@@ -98,6 +105,46 @@ always_comb begin
         end
     endcase
 end
+
+state_machine STATE_MACHINE
+(
+    .clk(clk),
+    .n_rst(n_rst),
+    
+    .btnu(btnu_d),
+    .btnd(btnd_d),
+    .btnc(btnc_d),
+    .btnl(btnl_d),
+    .btnr(btnr_d),
+    
+    .user_value(user_value),
+    .alu_value(alu_result),
+    
+    .state(state),
+    .op(op),
+    
+    .accumulator(accumulator),
+    .display_value(display_value)
+);
+
+alu ALU
+(
+    .op(op),
+    .in0(accumulator),
+    .in1(user_value),
+    .out(alu_result)
+);
+
+seven_segment_display_controller #(.N(4)) DISPLAY_CONTROLLER
+(
+    .clk(clk),
+    .n_rst(n_rst),
+    
+    .in(display_value),
+    
+    .c(c),
+    .a(a)
+);
 
 localparam DB_CYCLES = 10000;
 
@@ -140,41 +187,5 @@ button_debouncer #(.CYCLES(DB_CYCLES)) DB4
     .clk(clk),
     .btn(btnr),
     .btn_d(btnr_d)
-);
-
-state_machine STATE_MACHINE
-(
-    .clk(clk),
-    .n_rst(n_rst),
-    .btnu(btnu_d),
-    .btnd(btnd_d),
-    .btnc(btnc_d),
-    .btnl(btnl_d),
-    .btnr(btnr_d),
-    .user_value(user_value),
-    .alu_value(alu_result),
-    
-    .state(state),
-    .op(op),
-    .accumulator(accumulator),
-    .display_value(display_value)
-);
-
-
-alu ALU
-(
-    .op(op),
-    .in0(accumulator),
-    .in1(user_value),
-    .out(alu_result)
-);
-
-seven_segment_display_controller #(.N(4)) DISPLAY_CONTROLLER
-(
-    .clk(clk),
-    .n_rst(n_rst),
-    .in(display_value),
-    .c(c),
-    .a(a)
 );
 endmodule

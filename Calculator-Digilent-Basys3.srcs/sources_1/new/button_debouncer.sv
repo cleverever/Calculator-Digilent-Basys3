@@ -1,15 +1,15 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
-// Engineer: 
+// Engineer: Everett Craw
 // 
 // Create Date: 03/19/2024 06:10:36 PM
 // Design Name: 
 // Module Name: button_debouncer
-// Project Name: 
-// Target Devices: 
+// Project Name: Calculator-Digilent-Basys3
+// Target Devices: Digilent-Basys3
 // Tool Versions: 
-// Description: 
+// Description: A module which prevents rapid oscillation of a signal caused by a button press.
 // 
 // Dependencies: 
 // 
@@ -19,8 +19,6 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
-import calculator_pkg::*;
 
 module button_debouncer #(parameter CYCLES = 100)
 (
